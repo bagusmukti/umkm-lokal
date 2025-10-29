@@ -7,8 +7,8 @@ export default function Home() {
       <nav className="w-full bg-[#0B1D51] shadow-md py-4 px-6 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-white">UMKM Lokal</h1>
         <ul className="flex gap-6 text-white font-medium">
-          <li className="hover:text-[#725CAD] cursor-pointer transition">Home</li>
-          <li className="hover:text-[#725CAD] cursor-pointer transition">Explore UMKM</li>
+          <li><a href="/" className="hover:text-[#725CAD] transition">Home</a></li>
+          <li><a href="/explore" className="hover:text-[#725CAD] transition">Explore UMKM</a></li>
           <li className="hover:text-[#725CAD] cursor-pointer transition">About</li>
           <li className="hover:text-[#725CAD] cursor-pointer transition">Contact</li>
         </ul>
