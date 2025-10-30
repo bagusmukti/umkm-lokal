@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 const dummyUMKM = [
   {
     id: 1,
-    name: "Kedai Kopi Kenangan Kita",
+    name: "Teh Poci Keputih",
     category: "Minuman",
     location: "Keputih",
     image: "https://via.placeholder.com/300x200",
   },
   {
     id: 2,
-    name: "Sambal Bu Ana",
+    name: "Ketoprak Jakarta 66",
     category: "Makanan",
     location: "Keputih",
     image: "https://via.placeholder.com/300x200",
@@ -77,6 +77,13 @@ const dummyUMKM = [
     name: "Barra Barber Shop",
     category: "Jasa",
     location: "Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
+    {
+    id: 12,
+    name: "Warung Kane",
+    category: "Makanan",
+    location: "Keputih",
     image: "https://via.placeholder.com/300x200",
   },
 ];
@@ -164,10 +171,6 @@ export default function UMKMList() {
           <p className="text-center text-lg mt-10">UMKM tidak ditemukan 😥</p>
         )}
       </div>
-      {/* FOOTER */}
-      <footer className="mt-auto bg-[#0B1D51] text-white text-center py-4">
-        <p>© 2025 UMKM Lokal. Berotak Agile.</p>
-      </footer>
     </div>
   );
 }
