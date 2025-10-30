@@ -161,6 +161,14 @@ const dummyUMKM = [
     mapslink: "https://maps.app.goo.gl/yysNQfpGDR1DgKrd9",
     menu: [],
   },
+  {
+    id: 12,
+    name: "Warung Kane",
+    category: "Makanan",
+    location: "Keputih",
+    image: "https://via.placeholder.com/300x200",
+    menu: [],
+  },
 ];
 
 const formatRupiah = (number) => {

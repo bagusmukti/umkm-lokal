@@ -68,11 +68,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className="mt-auto bg-[#0B1D51] text-white text-center py-4">
-        <p>© 2025 UMKM Lokal. Berotak Agile.</p>
-      </footer>
     </div>
   );
 }
