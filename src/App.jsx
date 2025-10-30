@@ -11,7 +11,7 @@ import About from "./pages/About";
 
 export default function App() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <BrowserRouter>
         <nav className="w-full bg-[#0B1D51] shadow-md py-4 px-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-white">UMKM Lokal</h1>
