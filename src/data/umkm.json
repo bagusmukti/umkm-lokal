@@ -1,0 +1,156 @@
+[
+  {
+    "id": 1,
+    "nama": "Warkop 'Koneksi'",
+    "kategori": "Minuman",
+    "alamat": "Jl. Merdeka No. 1, Sidoarjo",
+    "deskripsi": "Warung kopi legendaris di Sidoarjo yang kini jadi tempat 'remote work' favorit. Kopi tubruknya mantap dan internetnya kencang.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Nugas Friendly", "Buka 24 Jam", "Ramah di Kantong"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/warkop1/400/300",
+      "https://picsum.photos/seed/warkop2/400/300",
+      "https://picsum.photos/seed/warkop3/400/300"
+    ]
+  },
+  {
+    "id": 2,
+    "nama": "Bakso 'Cak Mamat'",
+    "kategori": "Makanan",
+    "alamat": "Jl. Pahlawan No. 45, Sidoarjo",
+    "deskripsi": "Berdiri sejak 1985, Bakso Cak Mamat tidak pernah sepi. Dikenal dengan kuah kaldu yang kaya rasa dan bakso urat yang kenyal.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Legendaris", "Ramah di Kantong", "Parkir Mudah"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/bakso1/400/300",
+      "https://picsum.photos/seed/bakso2/400/300"
+    ]
+  },
+  {
+    "id": 3,
+    "nama": "Pangkas Rambut 'Climber'",
+    "kategori": "Jasa",
+    "alamat": "Jl. Gatot Subroto No. 30, Sidoarjo",
+    "deskripsi": "Tempat pangkas rambut modern untuk pria. Selalu update dengan gaya rambut terbaru, dari fade sampai french crop. Pelayanan ramah.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Parkir Mudah"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/pangkas1/400/300"
+    ]
+  },
+  {
+    "id": 4,
+    "nama": "Kafe 'Titik Temu'",
+    "kategori": "Minuman",
+    "alamat": "Jl. Thamrin No. 8, Sidoarjo",
+    "deskripsi": "Desain interior minimalis dan pencahayaan yang hangat membuat kafe ini sempurna untuk foto-foto. Menu andalan: Es Kopi Susu Gula Aren.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Instagrammable", "Nugas Friendly"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/kafe1/400/300",
+      "https://picsum.photos/seed/kafe2/400/300",
+      "https://picsum.photos/seed/kafe3/400/300",
+      "https://picsum.photos/seed/kafe4/400/300"
+    ]
+  },
+  {
+    "id": 5,
+    "nama": "Warung 'Bunda'",
+    "kategori": "Makanan",
+    "alamat": "Gg. Sempit No. 2, Sidoarjo",
+    "deskripsi": "Masakan rumahan prasmanan dengan puluhan lauk. Ambil sendiri sepuasnya, bayar di kasir. Murah, kenyang, dan enak.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Ramah di Kantong"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/warung1/400/300"
+    ]
+  },
+  {
+    "id": 6,
+    "nama": "Laundry 'Kinclong'",
+    "kategori": "Jasa",
+    "alamat": "Jl. Perjuangan No. 99, Sidoarjo",
+    "deskripsi": "Laundry kiloan dan satuan. Bisa kilat 3 jam jadi. Bersih, wangi, dan rapi. Menerima antar-jemput area sekitar.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Ramah di Kantong"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/laundry1/400/300",
+      "https://picsum.photos/seed/laundry2/400/300"
+    ]
+  },
+  {
+    "id": 7,
+    "nama": "Soto Ayam 'Pak Gito'",
+    "kategori": "Makanan",
+    "alamat": "Jl. Raya Ponti No. 12, Sidoarjo",
+    "deskripsi": "Soto ayam kampung asli dengan koya gurih melimpah. Salah satu kuliner wajib jika berkunjung ke Sidoarjo. Buka dari pagi buta.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Legendaris", "Parkir Mudah"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/soto1/400/300"
+    ]
+  },
+  {
+    "id": 8,
+    "nama": "Kopi 'Janji Kita'",
+    "kategori": "Minuman",
+    "alamat": "Lobby Mall Sidoarjo, Lt. G",
+    "deskripsi": "Gerai kopi susu kekinian yang praktis untuk 'take-away'. Cepat, enak, dan harganya pas di kantong mahasiswa.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Instagrammable", "Ramah di Kantong"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/kopsu1/400/300",
+      "https://picsum.photos/seed/kopsu2/400/300"
+    ]
+  },
+  {
+    "id": 9,
+    "nama": "Penyetan 'Malam'",
+    "kategori": "Makanan",
+    "alamat": "Area GOR Sidoarjo",
+    "deskripsi": "Pilihan lauk penyet lengkap, dari ayam, lele, sampai tahu tempe. Sambalnya terkenal pedas dan bikin ketagihan. Buka sampai subuh.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Buka 24 Jam", "Ramah di Kantong", "Parkir Mudah"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/penyet1/400/300"
+    ]
+  },
+  {
+    "id": 10,
+    "nama": "Bengkel 'Siap Gas'",
+    "kategori": "Jasa",
+    "alamat": "Jl. Tol Arteri No. 55, Sidoarjo",
+    "deskripsi": "Bengkel motor 24 jam. Menerima servis rutin, ganti oli, dan tambal ban. Montir berpengalaman dan jujur.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Buka 24 Jam", "Parkir Mudah"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/bengkel1/400/300",
+      "https://picsum.photos/seed/bengkel2/400/300"
+    ]
+  },
+  {
+    "id": 11,
+    "nama": "Pisang Keju 'Lumer'",
+    "kategori": "Makanan",
+    "alamat": "Jl. Diponegoro No. 10, Sidoarjo",
+    "deskripsi": "Camilan pisang goreng krispi dengan topping keju, coklat, dan susu yang melimpah. Tampilannya sangat menggugah selera.",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Instagrammable"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/pisang1/400/300"
+    ]
+  },
+  {
+    "id": 12,
+    "nama": "Jus 'Sehat Selalu'",
+    "kategori": "Minuman",
+    "alamat": "Depan SMP 1 Sidoarjo",
+    "deskripsi": "Aneka jus buah segar tanpa pemanis buatan. Harga pelajar, kualitas premium. Favorit: Jus Tiga Saja (Wortel, Tomat, Apel).",
+    "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.038421379668!2d112.71265867591026!3d-7.461247092591694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e132c32450dd%3A0x1d369f622d1a29aa!2sAlun%20-%20Alun%20Kabupaten%20Sidoarjo!5e0!3m2!1sen!2sid!4v1698701540114!5m2!1sen!2sid\" width=\"100%\" height=\"100%\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+    "tags": ["Ramah di Kantong"],
+    "galeriFoto": [
+      "https://picsum.photos/seed/jus1/400/300",
+      "https://picsum.photos/seed/jus2/400/300"
+    ]
+  }
+]
