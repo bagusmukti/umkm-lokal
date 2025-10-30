@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const dummyUMKM = [
   {
@@ -29,6 +30,55 @@ const dummyUMKM = [
     location: "Mulyosari",
     image: "https://via.placeholder.com/300x200",
   },
+  {
+    id: 5,
+    name: "Warung Penyetan IBU YONO",
+    category: "Makanan",
+    location: "Jl. Gebang Lor No.100, Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    id: 6,
+    name: "Warung Penyetan Anda",
+    category: "Makanan",
+    location: "Gg. Puskesmas No.8, Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    id: 7,
+    name: "Warung Sederhana Gresik",
+    category: "Makanan, Minuman",
+    location: "Jl. Gebang Putih, No.90, Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    id: 8,
+    name: "Warung Hanna 89",
+    category: "Makanan, Minuman",
+    location: "Jl. Gebang Lor No.89, Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    id: 9,
+    name: "Keke Juice",
+    category: "Minuman",
+    location: "Jl. Gebang Lor No.9, Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    id: 10,
+    name: "QONTAK BARBERSHOP",
+    category: "Jasa",
+    location: "Jl. Gebang Lor No.42, Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    id: 11,
+    name: "Barra Barber Shop",
+    category: "Jasa",
+    location: "Gebang Putih",
+    image: "https://via.placeholder.com/300x200",
+  },
 ];
 
 export default function UMKMList() {
@@ -39,34 +89,17 @@ export default function UMKMList() {
     const matchesSearch = item.name
       .toLowerCase()
       .includes(search.toLowerCase());
-    const matchesFilter = filter === "Semua" || item.category === filter;
+    const matchesFilter =
+      filter === "Semua" ||
+      item.category
+        .split(",")
+        .map((cat) => cat.trim())
+        .includes(filter);
     return matchesSearch && matchesFilter;
   });
 
   return (
     <div>
-      {/* NAVBAR */}
-      <nav className="w-full bg-[#0B1D51] shadow-md py-4 px-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-white">UMKM Lokal</h1>
-        <ul className="flex gap-6 text-white font-medium">
-          <li>
-            <a href="/" className="hover:text-[#725CAD] transition">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="/umkm" className="hover:text-[#725CAD] transition">
-              Explore UMKM
-            </a>
-          </li>
-          <li className="hover:text-[#725CAD] cursor-pointer transition">
-            About
-          </li>
-          <li className="hover:text-[#725CAD] cursor-pointer transition">
-            Contact
-          </li>
-        </ul>
-      </nav>
       <div className="min-h-screen bg-[#FFE3A9] text-[#0B1D51] font-sans px-6 py-6">
         <h2 className="text-3xl font-bold text-center mb-8">Daftar UMKM</h2>
 
@@ -75,13 +108,13 @@ export default function UMKMList() {
           <input
             type="text"
             placeholder="Cari UMKM..."
-            className="w-full md:w-1/2 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
+            className="w-full md:w-3/4 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           <select
-            className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
+            className="w-full md:w-1/4 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           >
@@ -90,6 +123,7 @@ export default function UMKMList() {
             <option>Minuman</option>
             <option>Fashion</option>
             <option>Kerajinan</option>
+            <option>Jasa</option>
           </select>
         </div>
 
@@ -112,9 +146,15 @@ export default function UMKMList() {
                   {umkm.category} • {umkm.location}
                 </p>
 
-                <button className="mt-4 w-full px-4 py-2 bg-[#0B1D51] text-white rounded-md hover:bg-[#725CAD] transition">
+                <Link
+                  to={`/detail/${umkm.id}`}
+                  className="mt-4 w-full block text-center px-4 py-2 bg-[#0B1D51] text-white rounded-md hover:bg-[#725CAD] transition"
+                >
                   Lihat Detail
-                </button>
+                </Link>
+                {/* <button className="mt-4 w-full px-4 py-2 bg-[#0B1D51] text-white rounded-md hover:bg-[#725CAD] transition">
+                  Lihat Detail
+                </button> */}
               </div>
             </div>
           ))}
