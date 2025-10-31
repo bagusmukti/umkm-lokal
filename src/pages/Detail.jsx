@@ -74,7 +74,7 @@ const dummyUMKM = [
     name: "Warung Penyetan IBU YONO",
     category: "Makanan",
     location: "Jl. Gebang Lor No.100, Gebang Putih",
-    image: "https://via.placeholder.com/300x200",
+    image: penyetan,
     mapslink: "",
     menu: [
       {
@@ -183,6 +183,19 @@ export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [modalImageUrl, setModalImageUrl] = React.useState("");
+
+  const openModal = (imageUrl) => {
+    setModalImageUrl(imageUrl);
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalImageUrl("");
+  };
+
   const umkm = dummyUMKM.find((item) => item.id === Number(id));
 
   if (!umkm) {
@@ -222,32 +235,33 @@ export default function Detail() {
           ← Kembali
         </button>
 
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-8 shadow-md p-5 rounded-lg">
           <img
             src={umkm.image}
             alt={umkm.name}
-            className="w-full md:w-1/2 h-72 object-cover rounded-lg shadow-md"
+            className="w-full md:w-1/2 h-72 object-cover rounded-lg cursor-pointer hover:opacity-80 transition"
+            onClick={() => openModal(umkm.image)}
           />
 
           <div className="md:w-1/2">
-            <h1 className="text-4xl font-bold mb-1">{umkm.name}</h1>
-            <p className="text-xl text-gray-600 mb-5">
+            <h1 className="text-3xl font-bold mb-1 text-[#725CAD]">{umkm.name}</h1>
+            <p className="text-2l text-gray-600 mb-5">
               Kategori:{" "}
               <span className="font-semibold text-[#0B1D51]">
                 {umkm.category}
               </span>
             </p>
 
-            <h3 className="text-2xl font-semibold mb-1 border-b pb-2">
+            <h3 className="text-xl font-semibold mb-1 border-b pb-2">
               Informasi Lokasi
             </h3>
-            <p className="text-lg mb-4">Alamat: {umkm.location}</p>
+            <p className="text-2l mb-4">Alamat: {umkm.location}</p>
 
             <a
               href={umkm.mapslink}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 w-full inline-block text-center px-6 py-3 bg-[#725CAD] text-white font-semibold rounded-md hover:bg-[#5a428a] transition"
+              className="mt-3 w-full inline-block text-center px-6 py-3 bg-[#8CCDEB] text-black font-semibold rounded-md hover:bg-[#FFE3A9] transition"
             >
               Lihat di Google Maps
             </a>
@@ -255,7 +269,7 @@ export default function Detail() {
         </div>
 
         {umkm.menu && umkm.menu.length > 0 && (
-          <div className="mt-10 pt-6 border-t border-[#0B1D51]/10">
+          <div className="mt-10 pt-6 border-t border-[#0B1D51]/10 shadow-md p-5 rounded-lg">
             <h3 className="text-3xl font-bold mb-6 text-center text-[#0B1D51]">
               Daftar Menu 🍽️
             </h3>
@@ -275,7 +289,8 @@ export default function Detail() {
                         <img
                           src={menuItem.gambar_menu}
                           alt={menuItem.nama_menu}
-                          className="w-20 h-20 object-cover rounded-md flex-shrink-0"
+                          className="w-20 h-20 object-cover rounded-md flex-shrink-0 cursor-pointer hover:scale-110 transition"
+                          onClick={() => openModal(menuItem.gambar_menu)}
                         />
                       )}
 
@@ -301,6 +316,32 @@ export default function Detail() {
         )}
 
       </div>
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center z-50 p-4"
+          onClick={closeModal} // Klik area luar untuk menutup
+        >
+          <div
+            // Gunakan lebar dan tinggi maksimal layar (max-w-screen & max-h-screen)
+            className="relative max-w-screen max-h-screen p-5" 
+            onClick={(e) => e.stopPropagation()} // Mencegah penutupan saat mengklik gambar
+          >
+            <button
+              onClick={closeModal}
+              className="absolute top-7 right-7 text-white text-4xl font-bold p-2 z-50 bg-black/50 rounded-full hover:bg-black leading-none transition"
+              aria-label="Tutup"
+            >
+              ×
+            </button>
+            <img
+              src={modalImageUrl}
+              alt="Gambar Diperbesar"
+              // Pastikan gambar menggunakan 95% tinggi viewport dan lebar penuh
+              className="max-w-full max-h-[95vh] object-contain rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 

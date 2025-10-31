@@ -1,4 +1,5 @@
 import heroImg from "../assets/Newjeans4.jpg";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -13,9 +14,10 @@ export default function Home() {
             Dukung produk lokal dan bantu perekonomian masyarakat sekitar dengan
             mengetahui UMKM yang ada di daerahmu.
           </p>
-          <button className="px-6 py-3 bg-[#0B1D51] text-white font-semibold rounded-md hover:bg-[#8CCDEB] transition">
+          <Link to="/explore"
+          className="px-6 py-3 bg-[#0B1D51] text-white font-semibold rounded-md hover:bg-[#8CCDEB] transition">
             Mulai Jelajahi
-          </button>
+          </Link>
         </div>
         <img
           src={heroImg}
@@ -31,12 +33,13 @@ export default function Home() {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {["Makanan", "Minuman", "Kelontong", "Jasa"].map((category) => (
-            <div
+            <Link
               key={category}
+              to={`/explore?category=${category}`}
               className="p-6 bg-white shadow rounded-lg hover:scale-105 transition cursor-pointer font-medium text-lg border border-[#0B1D51]/10"
             >
               {category}
-            </div>
+            </Link>
           ))}
         </div>
       </section>
