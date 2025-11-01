@@ -1,133 +1,147 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
+import { Link, useSearchParams } from "react-router-dom";
 
-const dummyUMKM = [
-  {
-    id: 1,
-    name: "Kedai Kopi Kenangan Kita",
-    category: "Minuman",
-    location: "Keputih",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 2,
-    name: "Sambal Bu Ana",
-    category: "Makanan",
-    location: "Keputih",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 3,
-    name: "Toko Ibu",
-    category: "Kelontong",
-    location: "Keputih",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 4,
-    name: "Captain Barbershop",
-    category: "Jasa",
-    location: "Mulyosari",
-    image: "https://via.placeholder.com/300x200",
-  },
-];
-
-export default function UMKMList() {
+export default function Explore() {
+  const [umkm, setUmkm] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("Semua");
+  const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const categoryFilter = searchParams.get('category');
 
-  const filteredUMKM = dummyUMKM.filter((item) => {
+  useEffect(() => {
+    fetchUMKM();
+  }, []);
+
+  async function fetchUMKM() {
+    setLoading(true);
+    const { data, error } = await supabase.from("umkm").select("*");
+    if (error) console.error(error);
+    else setUmkm(data);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    // Jika ada parameter 'category' di URL
+    if (categoryFilter) {
+      // Periksa apakah nilai dari URL ada di daftar kategori yang valid
+      if (categories.includes(categoryFilter)) {
+        // Atur state filter untuk mencerminkan filter URL
+        setFilter(categoryFilter); 
+      } else {
+        // Jika ada filter tapi tidak valid, kembalikan ke "Semua"
+        setFilter("Semua"); 
+      }
+    } else {
+      // Jika tidak ada parameter 'category' di URL, pastikan filter juga "Semua"
+      setFilter("Semua");
+    }
+  }, [categoryFilter]);
+
+  const filteredUMKM = umkm.filter((item) => {
     const matchesSearch = item.name
       .toLowerCase()
       .includes(search.toLowerCase());
-    const matchesFilter = filter === "Semua" || item.category === filter;
+
+    const matchesFilter =
+      filter === "Semua" ||
+      item.category
+        .split(",")
+        .map((cat) => cat.trim())
+        .includes(filter);
+
     return matchesSearch && matchesFilter;
   });
 
+  const categories = [
+    "Semua",
+    "Makanan",
+    "Minuman",
+    "Jasa",
+    "Kelontong",
+    "Fashion",
+  ];
+
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-10 text-center text-[#0B1D51] text-xl">
+        Memuat data UMKM...
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {/* NAVBAR */}
-      <nav className="w-full bg-[#0B1D51] shadow-md py-4 px-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-white">UMKM Lokal</h1>
-        <ul className="flex gap-6 text-white font-medium">
-          <li>
-            <a href="/" className="hover:text-[#725CAD] transition">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="/umkm" className="hover:text-[#725CAD] transition">
-              Explore UMKM
-            </a>
-          </li>
-          <li className="hover:text-[#725CAD] cursor-pointer transition">
-            About
-          </li>
-          <li className="hover:text-[#725CAD] cursor-pointer transition">
-            Contact
-          </li>
-        </ul>
-      </nav>
-      <div className="min-h-screen bg-[#FFE3A9] text-[#0B1D51] font-sans px-6 py-6">
-        <h2 className="text-3xl font-bold text-center mb-8">Daftar UMKM</h2>
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <h1 className="text-4xl font-bold mb-8 text-[#0B1D51]">Jelajahi UMKM</h1>
 
-        {/* Search + Filter */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
-          <input
-            type="text"
-            placeholder="Cari UMKM..."
-            className="w-full md:w-1/2 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+    {categoryFilter && (
+      <Link
+          to="/explore"
+          className="mb-4 inline-block px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition">
+            ← Tampilkan Semua UMKM
+          </Link>
+    )}
 
-          <select
-            className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <option>Semua</option>
-            <option>Makanan</option>
-            <option>Minuman</option>
-            <option>Fashion</option>
-            <option>Kerajinan</option>
-          </select>
-        </div>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-10 bg-white p-4 rounded-lg shadow-md sticky top-18">
+        <input
+          type="text"
+          placeholder="Cari nama UMKM..."
+          className="w-full md:w-3/4 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-        {/* UMKM Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredUMKM.map((umkm) => (
-            <div
-              key={umkm.id}
-              className="bg-white border border-[#0B1D51]/10 rounded-lg shadow hover:shadow-lg transition overflow-hidden"
-            >
-              <img
-                src={umkm.image}
-                alt={umkm.name}
-                className="w-full h-48 object-cover"
-              />
-
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-1">{umkm.name}</h3>
-                <p className="text-sm text-gray-700">
-                  {umkm.category} • {umkm.location}
-                </p>
-
-                <button className="mt-4 w-full px-4 py-2 bg-[#0B1D51] text-white rounded-md hover:bg-[#725CAD] transition">
-                  Lihat Detail
-                </button>
-              </div>
-            </div>
+        <select
+          className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD] w-full md:w-1/4"
+          value={filter}
+          onChange={(e) => {
+              setFilter(e.target.value);
+              if (categoryFilter) {
+                  searchParams.delete('category');
+              }
+          }}
+        >
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
           ))}
-        </div>
+        </select>
+      </div>
 
-        {filteredUMKM.length === 0 && (
-          <p className="text-center text-lg mt-10">UMKM tidak ditemukan 😥</p>
+      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        {filteredUMKM.length > 0 ? (
+          filteredUMKM.map((item) => (
+          <div
+            key={item.id}
+            className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition"
+          >
+            <img
+              src={item.image}
+              alt={item.name}
+              className="h-40 w-full object-cover"
+            />
+
+            <div className="p-4">
+              <h2 className="font-semibold text-xl text-[#725CAD]">
+                {item.name}
+              </h2>
+              <p className="text-sm text-gray-600">{item.category}</p>
+              <p className="text-sm text-gray-500 mt-1">{item.location}</p>
+
+              <Link
+                to={`/detail/${item.id}`}
+                className="inline-block mt-3 px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition"
+              >
+                Lihat Detail
+              </Link>
+            </div>
+          </div>
+        ))
+      ) : (<p className="text-center col-span-full text-gray-600">Tidak ada UMKM yang cocok dengan kriteria pencarian.</p>
         )}
       </div>
-      {/* FOOTER */}
-      <footer className="mt-auto bg-[#0B1D51] text-white text-center py-4">
-        <p>© 2025 UMKM Lokal. Berotak Agile.</p>
-      </footer>
     </div>
   );
 }
