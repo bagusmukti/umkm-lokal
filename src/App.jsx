@@ -8,7 +8,7 @@ import {
 import Home from "./pages/Home";
 import Explore from "./pages/Explore";
 import Detail from "./pages/Detail";
-import About from "./pages/About";
+import UMKMHighlight from "./pages/UMKMHighlight";
 import { useEffect } from "react";
 
 const ScrollToTop = () => {
@@ -40,8 +40,8 @@ export default function App() {
               </Link>
             </li>
             <li>
-              <Link to={`/about`} className="hover:text-[#725CAD] transition">
-                About
+              <Link to={`/highlight`} className="hover:text-[#725CAD] transition">
+                UMKM of The Week
               </Link>
             </li>
             <li className="hover:text-[#725CAD] cursor-pointer transition">
@@ -55,7 +55,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/highlight" element={<UMKMHighlight />} />
         </Routes>
         </div>
 
