@@ -1,16 +1,55 @@
-# React + Vite
+# 🏆 Direktori UMKM Lokal: Digitalisasi & Promosi Bisnis Setempat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Deskripsi Singkat Project
 
-Currently, two official plugins are available:
+**Direktori UMKM Lokal** adalah platform direktori digital yang dirancang untuk mempromosikan dan mempermudah masyarakat dalam menemukan serta mendukung Usaha Mikro, Kecil, dan Menengah (UMKM) di wilayah setempat.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 💻 Tech Stack yang Digunakan
 
-## React Compiler
+* **Frontend Framework:** React.js (menggunakan Vite/Create React App)
+* **Styling:** Tailwind CSS
+* **Routing:** React Router DOM
+* **Backend & Database:** Supabase (sebagai BaaS untuk menyimpan data UMKM, menu, rating, dan kategori)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ⚙️ Cara Menjalankan Project (Lokal)
 
-## Expanding the ESLint configuration
+Ikuti langkah-langkah berikut untuk menjalankan proyek ini di mesin lokal Anda:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1.  **Kloning Repositori:**
+    ```bash
+    git clone <URL_REPOSITORY_ANDA>
+    cd direktori-umkm-lokal
+    ```
+
+2.  **Instalasi Dependensi:**
+    ```bash
+    npm install
+    # atau
+    yarn install
+    ```
+
+3.  **Konfigurasi Environment (Penting):**
+    Buat file `.env` di root proyek dan tambahkan kredensial Supabase Anda. Pastikan nama variabel sesuai dengan yang diakses di kode (`../lib/supabase.js`).
+    ```
+    REACT_APP_SUPABASE_URL="<URL_SUPABASE_PROJECT_ANDA>"
+    REACT_APP_SUPABASE_ANON_KEY="<ANON_KEY_SUPABASE_ANDA>"
+    ```
+
+4.  **Menjalankan Aplikasi:**
+    ```bash
+    npm start
+    # atau
+    npm run dev  # (Jika menggunakan setup Vite)
+    ```
+    Aplikasi akan terbuka di `http://localhost:3000`.
+
+### 🚀 Progress Saat Ini (First Draft Submission)
+
+Saat ini, proyek sudah mencakup fungsionalitas inti:
+
+* **Landing Page (`/`)** sudah fungsional, menampilkan kategori populer dan UMKM rekomendasi dari Supabase.
+* **Halaman Jelajahi (`/explore`)** sudah fungsional dengan fitur pencarian, filter multi-select berdasarkan kategori utama, dan filter berdasarkan tags/situasional.
+* **Halaman Detail UMKM (`/detail/:id`)** sudah fungsional, menampilkan data UMKM, informasi lokasi/maps, dan daftar menu yang dikelompokkan berdasarkan kategori menu.
+* **Struktur Aplikasi** (Navbar, Footer, Routing) sudah terimplementasi penuh menggunakan React Router DOM.
+
+---
