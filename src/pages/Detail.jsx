@@ -44,7 +44,7 @@
           .from("umkm")
           .select(`
             *,
-            menu:umkm_id (
+            menu (
               nama_menu,
               harga,
               deskripsi,
@@ -161,7 +161,7 @@
 
           {/* Daftar Menu */}
           {umkm.menu && umkm.menu.length > 0 && (
-            <div className="mt-10 pt-6 border-t border-[#0B1D51]/10 shadow-md p-5 rounded-lg">
+            <div className="mt-10 pt-6 border-t border-[#0B1D51]/10 shadow-md p-5 pb-1 rounded-lg">
               <h3 className="text-3xl font-bold mb-6 text-center text-[#0B1D51]">
                 Daftar Menu 🍽️
               </h3>
