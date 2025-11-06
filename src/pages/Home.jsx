@@ -1,178 +1,162 @@
-import React, { useState, useEffect } from 'react';
-import umkmData from '../data/umkm.json'; 
-import UMKMCard from '../components/UMKMCard';
-// BARU: Import Navbar dan Footer
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-
-// --- Helper (Tidak berubah) ---
-const allCategories = ["Semua", ...new Set(umkmData.map(item => item.kategori))];
-const allTags = [...new Set(umkmData.flatMap(item => item.tags))];
-
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { supabase } from "../lib/supabase";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function Home() {
-  
-  // --- States (Tidak berubah) ---
-  const [originalList, setOriginalList] = useState([]);
-  const [filteredList, setFilteredList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("Semua");
-  const [activeTags, setActiveTags] = useState([]);
+  const [recommended, setRecommended] = useState([]);
+  const [popularCategories, setPopularCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  
-  // --- Load Data & Title (Update) ---
   useEffect(() => {
-    // BARU: Set judul halaman
-    document.title = 'Direktori UMKM Lokal - Halaman Utama';
+    document.title = "Direktori UMKM Lokal - Beranda";
+    fetchRecommendations();
+  }, []);
 
-    setOriginalList(umkmData);
-    setFilteredList(umkmData);
-  }, []); // Hanya berjalan sekali
+  const fetchRecommendations = async () => {
+    try {
+      setLoading(true);
 
+      const { data: recData, error: recError } = await supabase
+        .from("umkm")
+        .select("*")
+        .order("rating", { ascending: false })
+        .limit(6);
 
-  // --- Logika Filter (Tidak berubah) ---
-  useEffect(() => {
-    let list = [...originalList];
+      if (recError) throw recError;
+      setRecommended(recData || []);
 
-    if (searchQuery.length > 0) {
-      list = list.filter(item => 
-        item.nama.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    if (activeCategory !== "Semua") {
-      list = list.filter(item => 
-        item.kategori === activeCategory
-      );
-    }
-    if (activeTags.length > 0) {
-      list = list.filter(item => 
-        activeTags.every(tag => item.tags.includes(tag))
-      );
-    }
-    setFilteredList(list);
-  }, [searchQuery, activeCategory, activeTags, originalList]);
+      const { data: catData, error: catError } = await supabase
+        .from("umkm")
+        .select("category");
 
+      if (catError) throw catError;
 
-  // --- Event Handlers (Tidak berubah) ---
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
-  const handleCategoryClick = (kategori) => setActiveCategory(kategori);
-  const handleTagToggle = (tag) => {
-    if (activeTags.includes(tag)) {
-      setActiveTags(activeTags.filter(t => t !== tag));
-    } else {
-      setActiveTags([...activeTags, tag]);
+      const count = {};
+      (catData || []).forEach((r) => {
+        if (!r?.category) return;
+        r.category
+          .split(",")
+          .map((c) => c.trim())
+          .forEach((c) => {
+            if (!c) return;
+            count[c] = (count[c] || 0) + 1;
+          });
+      });
+
+      const sorted = Object.entries(count)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([k]) => k);
+
+      setPopularCategories(sorted);
+      setLoading(false);
+    } catch (err) {
+      console.error("Home fetch error", err);
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-xl text-gray-600">Memuat rekomendasi...</p>
+      </div>
+    );
+  }
 
-  // --- JSX (Update) ---
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* BARU: Gunakan komponen Navbar */}
-      <Navbar />
-      
-      <header className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-800 text-center">
-          Temukan UMKM Lokal Favoritmu
-        </h1>
-        <p className="text-lg text-gray-600 text-center mt-2">
-          Jelajahi dan dukung bisnis lokal di sekitarmu.
-        </p>
+      <header className="bg-gradient-to-r from-[#725CAD] to-[#8CCDEB] text-white">
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-5xl font-bold text-center mb-4">
+            Dukung UMKM Lokal
+          </h1>
+          <p className="text-xl text-center mb-8">
+            Temukan UMKM terbaik dan dukung bisnis lokal di sekitarmu.
+          </p>
+          <div className="flex justify-center">
+            <Link
+              to="/explore"
+              className="bg-white text-[#725CAD] px-8 py-3 rounded-full font-semibold hover:bg-[#FFE3A9] transition-colors"
+            >
+              Jelajahi Sekarang
+            </Link>
+          </div>
+        </div>
       </header>
 
-      {/* --- Area Kontrol (Update di sticky) --- */}
-      <div className="container mx-auto px-4 mb-8 sticky top-[65px] z-10"> {/* Disesuaikan agar di bawah navbar */}
-        
-        {/* Search Bar (Tidak berubah) */}
-        <div className="mb-4 p-4 bg-white rounded-lg shadow-lg">
-          <input 
-            type="text" 
-            placeholder="Cari nama UMKM..."
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </div>
-        
-        {/* Filter Kategori (Update di hover) */}
-        <div className="mb-4 p-4 bg-white rounded-lg shadow-lg">
-          <h3 className="text-sm font-semibold text-gray-500 mb-3">Kategori</h3>
-          <div className="flex flex-wrap gap-2">
-            {allCategories.map((kategori) => (
-              <button 
-                key={kategori}
-                onClick={() => handleCategoryClick(kategori)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all
-                  ${activeCategory === kategori 
-                    ? 'bg-emerald-700 text-white shadow-md' 
-                    // BARU: Tambah hover state
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
-                  }
-                `}
+      <main className="container mx-auto px-4 py-12">
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-[#0B1D51] mb-6">
+            Kategori Populer
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {popularCategories.map((cat) => (
+              <Link
+                key={cat}
+                to={`/explore?category=${encodeURIComponent(cat)}`}
+                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition text-center"
               >
-                {kategori}
-              </button>
+                <h3 className="text-lg font-semibold text-[#725CAD]">{cat}</h3>
+              </Link>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Filter Tag Situasional (Update di hover) */}
-        <div className="p-4 bg-white rounded-lg shadow-lg">
-          <h3 className="text-sm font-semibold text-gray-500 mb-3">Situasional</h3>
-          <div className="flex flex-wrap gap-2">
-            {allTags.map((tag) => (
-              <button 
-                key={tag}
-                onClick={() => handleTagToggle(tag)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all
-                  ${activeTags.includes(tag) 
-                    ? 'bg-amber-500 text-white shadow-md' 
-                    // BARU: Tambah hover state
-                    : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
-                  }
-                `}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        </div>
-
-      </div>
-
-      {/* --- Grid Daftar UMKM --- */}
-      <main className="container mx-auto px-4 pb-12">
-        <p className="text-gray-500 mb-4">
-          Menampilkan {filteredList.length} dari {originalList.length} UMKM.
-        </p>
-
-        {filteredList.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredList.map((umkm) => (
-              <UMKMCard key={umkm.id} umkm={umkm} />
-            ))}
-          </div>
-        ) : (
-          // Pesan 'Tidak Ditemukan'
-          <div className="text-center text-gray-500 mt-16 col-span-full">
-            <h3 className="text-2xl font-semibold mb-2">Oops!</h3>
-            <p>Tidak ada UMKM yang cocok dengan filter pencarianmu.</p>
-            <button
-              onClick={() => {
-                setSearchQuery("");
-                setActiveCategory("Semua");
-                setActiveTags([]);
-              }}
-              className="mt-4 px-4 py-2 bg-emerald-700 text-white rounded-lg font-semibold hover:bg-emerald-800 transition-colors"
+        <section>
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold text-[#0B1D51]">
+              UMKM Rekomendasi
+            </h2>
+            <Link
+              to="/explore"
+              className="text-[#725CAD] font-semibold hover:text-[#8CCDEB] transition-colors"
             >
-              Reset Filter
-            </button>
+              Lihat Semua →
+            </Link>
           </div>
-        )}
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {recommended.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition"
+              >
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-48 w-full object-cover"
+                  />
+                )}
+                <div className="p-4">
+                  <h3 className="font-semibold text-xl text-[#725CAD] mb-2">
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-1">{item.category}</p>
+                  <p className="text-sm text-gray-500 mb-3">{item.location}</p>
+                  {typeof item.rating === "number" && (
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-amber-500">★</span>
+                      <span className="font-medium">
+                        {item.rating.toFixed(1)}
+                      </span>
+                    </div>
+                  )}
+                  <Link
+                    to={`/detail/${item.id}`}
+                    className="inline-block px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition"
+                  >
+                    Lihat Detail
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
-      
-      {/* BARU: Gunakan komponen Footer */}
-      <Footer />
     </div>
   );
 }

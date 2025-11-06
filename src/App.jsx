@@ -3,7 +3,7 @@ import {
   Routes,
   Route,
   useLocation,
-  Link
+  Link,
 } from "react-router-dom";
 import Home from "./pages/Home";
 import Explore from "./pages/Explore";
@@ -19,7 +19,7 @@ const ScrollToTop = () => {
   }, [pathname]);
 
   return null;
-}
+};
 
 export default function App() {
   return (
@@ -40,7 +40,10 @@ export default function App() {
               </Link>
             </li>
             <li>
-              <Link to={`/highlight`} className="hover:text-[#725CAD] transition">
+              <Link
+                to={`/highlight`}
+                className="hover:text-[#725CAD] transition"
+              >
                 UMKM of The Week
               </Link>
             </li>
@@ -50,18 +53,21 @@ export default function App() {
           </ul>
         </nav>
 
-<div className="mt-16 pb-12 min-h-screen">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/highlight" element={<UMKMHighlight />} />
-        </Routes>
+        <div className="mt-16 min-h-screen">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/detail/:id" element={<Detail />} />
+            <Route path="/highlight" element={<UMKMHighlight />} />
+          </Routes>
         </div>
 
         {/* FOOTER */}
         <footer className="mt-auto bg-[#0B1D51] text-white text-center py-4">
-          <p>© 2025 UMKM Lokal. Berotak Agile.</p>
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} Tim Berotak Agile. Dibuat untuk
+            Web in Action.
+          </p>
         </footer>
       </Router>
     </div>

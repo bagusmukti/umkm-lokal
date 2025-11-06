@@ -5,12 +5,18 @@ import { Link, useSearchParams } from "react-router-dom";
 export default function Explore() {
   const [umkm, setUmkm] = useState([]);
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("Semua");
+  const [activeCategories, setActiveCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchParams] = useSearchParams();
-  const categoryFilter = searchParams.get('category');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFilter = searchParams.get("category");
+
+  const [activeTags, setActiveTags] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+
+  const categories = ["Makanan", "Minuman", "Jasa", "Kelontong", "Fashion"];
 
   useEffect(() => {
+    document.title = "Direktori UMKM Lokal - Jelajahi";
     fetchUMKM();
   }, []);
 
@@ -18,130 +24,290 @@ export default function Explore() {
     setLoading(true);
     const { data, error } = await supabase.from("umkm").select("*");
     if (error) console.error(error);
-    else setUmkm(data);
+    else {
+      const fetchedUmkm = data || [];
+      setUmkm(fetchedUmkm);
+
+      const uniqueTags = new Set();
+      fetchedUmkm.forEach((item) => {
+        const tagsString = item.tags || "";
+        const tagsArray =
+          typeof tagsString === "string"
+            ? tagsString
+                .split(",")
+                .map((t) => t.trim())
+                .filter((t) => t)
+            : Array.isArray(tagsString)
+            ? tagsString
+            : [];
+
+        tagsArray.forEach((tag) => uniqueTags.add(tag));
+      });
+      setAllTags(Array.from(uniqueTags));
+    }
     setLoading(false);
   }
 
   useEffect(() => {
-    // Jika ada parameter 'category' di URL
+    setActiveTags([]);
+    setSearch("");
+
     if (categoryFilter) {
-      // Periksa apakah nilai dari URL ada di daftar kategori yang valid
       if (categories.includes(categoryFilter)) {
-        // Atur state filter untuk mencerminkan filter URL
-        setFilter(categoryFilter); 
+        setActiveCategories([categoryFilter]);
       } else {
-        // Jika ada filter tapi tidak valid, kembalikan ke "Semua"
-        setFilter("Semua"); 
+        setActiveCategories([]);
       }
     } else {
-      // Jika tidak ada parameter 'category' di URL, pastikan filter juga "Semua"
-      setFilter("Semua");
+      setActiveCategories([]);
     }
   }, [categoryFilter]);
 
+  const handleCategoryToggle = (category) => {
+    if (category === "Semua") {
+      setActiveCategories([]);
+    } else if (activeCategories.includes(category)) {
+      setActiveCategories(activeCategories.filter((c) => c !== category));
+    } else {
+      setActiveCategories([...activeCategories, category]);
+    }
+
+    if (categoryFilter) {
+      setSearchParams({}, { replace: true });
+    }
+    setActiveTags([]);
+  };
+
+  const handleTagToggle = (tag) => {
+    if (activeTags.includes(tag)) {
+      setActiveTags(activeTags.filter((t) => t !== tag));
+    } else {
+      setActiveTags([...activeTags, tag]);
+    }
+  };
+
   const filteredUMKM = umkm.filter((item) => {
-    const matchesSearch = item.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const name = (item.name || item.nama || "").toLowerCase();
+    const matchesSearch = name.includes(search.toLowerCase());
+
+    const itemCategories = (item.category || item.kategori || "")
+      .split(",")
+      .map((cat) => cat.trim());
 
     const matchesFilter =
-      filter === "Semua" ||
-      item.category
-        .split(",")
-        .map((cat) => cat.trim())
-        .includes(filter);
+      activeCategories.length === 0 ||
+      activeCategories.some((activeCat) => itemCategories.includes(activeCat));
 
-    return matchesSearch && matchesFilter;
+    const itemTags =
+      (typeof item.tags === "string"
+        ? item.tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter((t) => t)
+        : Array.isArray(item.tags)
+        ? item.tags
+        : []) || [];
+
+    const matchesTags =
+      activeTags.length === 0 ||
+      activeTags.every((tag) => itemTags.includes(tag));
+
+    return matchesSearch && matchesFilter && matchesTags;
   });
-
-  const categories = [
-    "Semua",
-    "Makanan",
-    "Minuman",
-    "Jasa",
-    "Kelontong",
-    "Fashion",
-  ];
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-10 text-center text-[#0B1D51] text-xl">
-        Memuat data UMKM...
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-xl text-[#0B1D51]">Memuat data UMKM...</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-4xl font-bold mb-8 text-[#0B1D51]">Jelajahi UMKM</h1>
-
-    {categoryFilter && (
-      <Link
-          to="/explore"
-          className="mb-4 inline-block px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition">
-            ← Tampilkan Semua UMKM
-          </Link>
-    )}
-
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-10 bg-white p-4 rounded-lg shadow-md sticky top-18">
-        <input
-          type="text"
-          placeholder="Cari nama UMKM..."
-          className="w-full md:w-3/4 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <select
-          className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#725CAD] w-full md:w-1/4"
-          value={filter}
-          onChange={(e) => {
-              setFilter(e.target.value);
-              if (categoryFilter) {
-                  searchParams.delete('category');
-              }
-          }}
-        >
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-[#0B1D51] text-center">
+          Jelajahi UMKM
+        </h1>
+        <p className="text-lg text-gray-600 text-center mt-2">
+          Temukan UMKM yang sesuai dengan kebutuhanmu
+        </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {filteredUMKM.length > 0 ? (
-          filteredUMKM.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition"
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="h-40 w-full object-cover"
-            />
+      <div className="container mx-auto px-4 mb-8 sticky top-[65px] z-10">
+        <div className="bg-white rounded-lg shadow-lg p-6 space-y-6">
+          {/* Tombol Reset (Jika ada filter dari URL Home) */}
+          {categoryFilter && (
+            <button
+              onClick={() => setSearchParams({}, { replace: true })}
+              className="inline-block px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition"
+            >
+              ← Reset Filter Awal
+            </button>
+          )}
 
-            <div className="p-4">
-              <h2 className="font-semibold text-xl text-[#725CAD]">
-                {item.name}
-              </h2>
-              <p className="text-sm text-gray-600">{item.category}</p>
-              <p className="text-sm text-gray-500 mt-1">{item.location}</p>
+          {/* SEARCH BAR */}
+          <input
+            type="text"
+            placeholder="Cari nama UMKM..."
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#725CAD]"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-              <Link
-                to={`/detail/${item.id}`}
-                className="inline-block mt-3 px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition"
+          {/* FILTER KATEGORI (MULTI-SELECT BUTTONS) */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-500 mb-3">
+              Kategori (Pilih lebih dari satu)
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {/* Tombol "Semua" - untuk mereset multi-select */}
+              <button
+                onClick={() => handleCategoryToggle("Semua")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all 
+                  ${
+                    activeCategories.length === 0
+                      ? "bg-[#725CAD] text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }
+                `}
               >
-                Lihat Detail
-              </Link>
+                Semua
+              </button>
+
+              {/* Tombol Kategori Lain */}
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryToggle(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all 
+                    ${
+                      activeCategories.includes(category)
+                        ? "bg-[#725CAD] text-white shadow-md"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }
+                  `}
+                >
+                  {category}
+                </button>
+              ))}
             </div>
           </div>
-        ))
-      ) : (<p className="text-center col-span-full text-gray-600">Tidak ada UMKM yang cocok dengan kriteria pencarian.</p>
-        )}
+
+          {/* FILTER TAGS (BUTTONS) */}
+          {allTags.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-500 mb-3">
+                Situasional (Tags)
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {allTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => handleTagToggle(tag)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all
+                        ${
+                          activeTags.includes(tag)
+                            ? "bg-[#FFE3A9] text-[#0B1D51] shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }
+                      `}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      <main className="container mx-auto px-4 pb-12">
+        <p className="text-gray-500 mb-4">
+          Menampilkan {filteredUMKM.length} dari {umkm.length} UMKM
+        </p>
+
+        {/* HASIL FILTERING */}
+        {filteredUMKM.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredUMKM.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition"
+              >
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt={item.name || item.nama}
+                    className="h-48 w-full object-cover"
+                  />
+                )}
+                <div className="p-4">
+                  <h2 className="font-semibold text-xl text-[#725CAD] mb-2">
+                    {item.name || item.nama}
+                  </h2>
+                  <p className="text-sm text-gray-600 mb-1">
+                    {item.category || item.kategori}
+                  </p>
+                  <p className="text-sm text-gray-500 mb-3">
+                    {item.location || item.lokasi}
+                  </p>
+
+                  {/* Tampilkan Tags di Card */}
+                  {(item.tags?.length > 0 ||
+                    (typeof item.tags === "string" && item.tags)) && (
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {(typeof item.tags === "string"
+                        ? item.tags.split(",")
+                        : item.tags
+                      )
+                        .filter((t) => t.trim())
+                        .map((tag, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-0.5 text-xs bg-[#FFE3A9] text-[#0B1D51] rounded-full font-medium"
+                          >
+                            {tag.trim()}
+                          </span>
+                        ))}
+                    </div>
+                  )}
+
+                  {typeof item.rating === "number" && (
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-amber-500">★</span>
+                      <span className="font-medium">
+                        {item.rating.toFixed(1)}
+                      </span>
+                    </div>
+                  )}
+                  <Link
+                    to={`/detail/${item.id}`}
+                    className="inline-block px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition"
+                  >
+                    Lihat Detail
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-500 mt-16 col-span-full">
+            <h3 className="text-2xl font-semibold mb-2">Oops!</h3>
+            <p>Tidak ada UMKM yang cocok dengan kriteria pencarianmu.</p>
+            <button
+              onClick={() => {
+                setSearch("");
+                setActiveCategories([]);
+                setActiveTags([]);
+              }}
+              className="mt-4 px-4 py-2 bg-[#725CAD] text-white rounded-lg font-semibold hover:bg-[#8CCDEB] transition-colors"
+            >
+              Reset Filter
+            </button>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
