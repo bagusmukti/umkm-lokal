@@ -1,164 +1,95 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-function Home() {
-  const [recommended, setRecommended] = useState([]);
-  const [popularCategories, setPopularCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    document.title = "Direktori UMKM Lokal - Beranda";
-    fetchRecommendations();
+export default function Home() {
+  React.useEffect(() => {
+    document.title = "UMKM Lokal - Beranda";
   }, []);
 
-  const fetchRecommendations = async () => {
-    try {
-      setLoading(true);
-
-      const { data: recData, error: recError } = await supabase
-        .from("umkm")
-        .select("*")
-        .order("rating", { ascending: false })
-        .limit(6);
-
-      if (recError) throw recError;
-      setRecommended(recData || []);
-
-      const { data: catData, error: catError } = await supabase
-        .from("umkm")
-        .select("category");
-
-      if (catError) throw catError;
-
-      const count = {};
-      (catData || []).forEach((r) => {
-        if (!r?.category) return;
-        r.category
-          .split(",")
-          .map((c) => c.trim())
-          .forEach((c) => {
-            if (!c) return;
-            count[c] = (count[c] || 0) + 1;
-          });
-      });
-
-      const sorted = Object.entries(count)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([k]) => k);
-
-      setPopularCategories(sorted);
-      setLoading(false);
-    } catch (err) {
-      console.error("Home fetch error", err);
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-xl text-gray-600">Memuat rekomendasi...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-gradient-to-r from-[#725CAD] to-[#8CCDEB] text-white">
-        <div className="container mx-auto px-4 py-16">
-          <h1 className="text-5xl font-bold text-center mb-4">
-            Dukung UMKM Lokal
+    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100">
+
+      <header className="container mx-auto px-4 py-24">
+        <div className="max-w-5xl mx-auto text-center">
+          <h1 className="text-5xl font-extrabold text-[#0B1D51] leading-tight mb-6">
+            Dukung Bisnis Lokal, Temukan Cerita Setiap UMKM
           </h1>
-          <p className="text-xl text-center mb-8">
-            Temukan UMKM terbaik dan dukung bisnis lokal di sekitarmu.
+          <p className="text-lg text-gray-600 mb-8">
+            Direktori UMKM lokal yang mudah digunakan untuk menemukan makanan,
+            minuman, fashion, dan layanan di sekitarmu — semua dalam satu
+            tempat.
           </p>
-          <div className="flex justify-center">
+
+          <div className="flex items-center justify-center gap-4">
             <Link
               to="/explore"
-              className="bg-white text-[#725CAD] px-8 py-3 rounded-full font-semibold hover:bg-[#FFE3A9] transition-colors"
+              className="px-8 py-3 bg-[#725CAD] text-white rounded-full text-lg font-semibold shadow hover:bg-[#5b46a2] transition"
             >
-              Jelajahi Sekarang
+              Jelajahi UMKM
             </Link>
+            <a
+              href="#about"
+              className="px-6 py-3 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-50 transition"
+            >
+              Pelajari Lebih Lanjut
+            </a>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12">
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-[#0B1D51] mb-6">
-            Kategori Populer
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {popularCategories.map((cat) => (
-              <Link
-                key={cat}
-                to={`/explore?category=${encodeURIComponent(cat)}`}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition text-center"
-              >
-                <h3 className="text-lg font-semibold text-[#725CAD]">{cat}</h3>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-[#0B1D51]">
-              UMKM Rekomendasi
-            </h2>
-            <Link
-              to="/explore"
-              className="text-[#725CAD] font-semibold hover:text-[#8CCDEB] transition-colors"
-            >
-              Lihat Semua →
-            </Link>
+      <section id="about" className="container mx-auto px-4 py-12">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="text-xl font-semibold text-[#725CAD] mb-2">
+              Temukan Cepat
+            </h3>
+            <p className="text-gray-600">
+              Cari UMKM berdasarkan nama, kategori, atau lokasi. Mudah dipakai
+              di perangkat apa pun.
+            </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {recommended.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition"
-              >
-                {item.image && (
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="h-48 w-full object-cover"
-                  />
-                )}
-                <div className="p-4">
-                  <h3 className="font-semibold text-xl text-[#725CAD] mb-2">
-                    {item.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-1">{item.category}</p>
-                  <p className="text-sm text-gray-500 mb-3">{item.location}</p>
-                  {typeof item.rating === "number" && (
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-amber-500">★</span>
-                      <span className="font-medium">
-                        {item.rating.toFixed(1)}
-                      </span>
-                    </div>
-                  )}
-                  <Link
-                    to={`/detail/${item.id}`}
-                    className="inline-block px-4 py-2 bg-[#8CCDEB] rounded-lg text-[#0B1D51] font-medium hover:bg-[#FFE3A9] transition"
-                  >
-                    Lihat Detail
-                  </Link>
-                </div>
-              </div>
-            ))}
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="text-xl font-semibold text-[#725CAD] mb-2">
+              Dukung Komunitas
+            </h3>
+            <p className="text-gray-600">
+              Setiap kunjungan dan pembelian membantu pengusaha lokal bertumbuh
+              — temukan yang sesuai dengan nilai dan kebutuhanmu.
+            </p>
           </div>
-        </section>
-      </main>
+
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="text-xl font-semibold text-[#725CAD] mb-2">
+              Mudah Dibagikan
+            </h3>
+            <p className="text-gray-600">
+              Bagikan profil UMKM favoritmu dengan teman dan keluarga untuk
+              membantu menjangkau audiens lebih luas.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50 py-12">
+        <div className="container mx-auto px-4 max-w-5xl text-center">
+          <h3 className="text-2xl font-bold text-[#0B1D51] mb-4">
+            Siap untuk mulai mendukung UMKM lokal?
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Klik tombol di bawah untuk melihat daftar lengkap UMKM dan filter
+            untuk menemukan yang paling relevan.
+          </p>
+          <Link
+            to="/explore"
+            className="inline-block px-8 py-3 bg-[#8CCDEB] text-[#0B1D51] rounded-full font-semibold hover:bg-[#7bc1ea] transition"
+          >
+            Jelajahi Sekarang
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
-
-export default Home;
