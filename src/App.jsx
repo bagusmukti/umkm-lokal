@@ -47,9 +47,6 @@ export default function App() {
                 UMKM of The Week
               </Link>
             </li>
-            <li className="hover:text-[#725CAD] cursor-pointer transition">
-              Contact
-            </li>
           </ul>
         </nav>
 
