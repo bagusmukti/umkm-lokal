@@ -128,7 +128,6 @@ const UMKMHighlight = () => {
         id: highlightData.umkm.id,
         name: highlightData.umkm.name,
         category: highlightData.umkm.category,
-        description: highlightData.featured_story || highlightData.umkm.description || '',
         owner: highlightData.umkm.owner || '',
         story: highlightData.featured_story || '',
         quote: highlightData.featured_quote || '',
@@ -323,9 +322,6 @@ const UMKMHighlight = () => {
                       <h4 className="font-bold text-xl text-gray-800 mb-2 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
                         {item.nama_menu}
                       </h4>
-                      <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
-                        {item.deskripsi}
-                      </p>
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                         <p className="text-blue-600 font-bold text-lg">
                           Rp {parseInt(item.harga || 0).toLocaleString('id-ID')}
